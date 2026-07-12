@@ -39,23 +39,23 @@ namespace Intellectus.AIAgent.Framework
     public class ConversationalAgent : IConversationalAgent
     {
         private readonly List<ChatMessage> _history = new();
-        private readonly List<ITool>? _tools;
+        private List<ITool>? _tools;
         private readonly ConversationalAgentSettings _settings;
+        private readonly IServiceProvider _serviceProvider;
 
-        public ConversationalAgent(ConversationalAgentSettings settings, IServiceProvider serviceProvider)
+        public ConversationalAgent(IServiceProvider serviceProvider)
         {
-            if (settings.Tools != null && settings.Tools.Any())
-            {
-                _tools = settings.Tools;
-            }
-            else
-            {
-                // If no tools are provided, try to resolve them from the service provider
-                _tools = serviceProvider.GetServices<ITool>().ToList();
-            }
-            
-            _settings = settings;
+            _serviceProvider = serviceProvider;
+            _settings = _serviceProvider.GetRequiredService<ConversationalAgentSettings>();
 
+            RefreshTools();                        
+
+            ResetHistory();
+        }
+
+        public void ResetHistory()
+        {
+            _history.Clear();
             var systemMessage = new SystemChatMessage(string.Format($@"
                     You are a helpful AI assistant with access to these tools:
                     {string.Join("\n", _tools.Select(t => $"{t.Name}: {t.Description}"))}
@@ -63,15 +63,32 @@ namespace Intellectus.AIAgent.Framework
                     TOOL: <ToolName>:{{0}}
                     If no tool is needed, respond with the final answer directly.
                     ", _settings.ReasoningResultContent));
-
             _history.Add(systemMessage);
+        }
+
+        public List<ChatMessage> GetHistory()
+        {
+            return _history;
+        }
+
+        public void RefreshTools()
+        {
+            if (_settings.Tools != null && _settings.Tools.Any())
+            {
+                _tools = _settings.Tools;
+            }
+            else
+            {
+                // If no tools are provided, try to resolve them from the service provider
+                _tools = _serviceProvider.GetServices<ITool>().ToList();
+            }
         }
 
         public async Task<ConversationalAgentResponse> RespondAsync(string userInput)
         {
             _history.Add(new UserChatMessage(userInput));
             
-            var chatClient = new ChatClient(_settings.OpenAILLMModel, _settings.OpenAIAPIKey);
+            var chatClient = _serviceProvider.GetRequiredService<ChatClient>();
 
             var result = await chatClient.CompleteChatAsync(_history);
             var reasoningResult = result.Value.Content[0].Text.Trim();
@@ -83,6 +100,8 @@ namespace Intellectus.AIAgent.Framework
                 {
                     var toolName = parts[1].Trim();
                     var toolInputs = parts.Skip(2).Select(p => p.Trim()).ToArray();
+
+                    RefreshTools(); // Ensure tools are up-to-date
 
                     var tool = _tools.FirstOrDefault(t => t.Name.Equals(toolName, StringComparison.OrdinalIgnoreCase));
                     if (tool != null)

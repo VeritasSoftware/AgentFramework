@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using OpenAI.Chat;
 using System;
 
 namespace Intellectus.AIAgent.Framework
@@ -12,6 +13,7 @@ namespace Intellectus.AIAgent.Framework
             configureSettings(settings);
             
             services.AddSingleton(settings);
+            services.AddSingleton(new ChatClient(settings.OpenAILLMModel, settings.OpenAIAPIKey));
             services.AddScoped<IConversationalAgent, ConversationalAgent>();
         }
     }
