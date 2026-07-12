@@ -82,7 +82,7 @@ namespace Intellectus.AIAgent.Framework
                 if (parts.Length >= 3)
                 {
                     var toolName = parts[1].Trim();
-                    var toolInputs = parts.Skip(2).ToArray();
+                    var toolInputs = parts.Skip(2).Select(p => p.Trim()).ToArray();
 
                     var tool = _tools.FirstOrDefault(t => t.Name.Equals(toolName, StringComparison.OrdinalIgnoreCase));
                     if (tool != null)
