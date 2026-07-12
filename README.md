@@ -78,12 +78,11 @@ public class SalesTool : ITool
 
     public Task<object> ExecuteAsync(params string[] input)
     {
-        var inputs = input[0].Split(":");
-        var productName = inputs[0].Trim();
+        var productName = input[0].Trim();
         var year =
-            inputs.Length > 1
+            input.Length > 1
             ?
-            int.Parse(inputs[1].Trim())
+            int.Parse(input[1].Trim())
             :
             0;            
 
