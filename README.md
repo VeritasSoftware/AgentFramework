@@ -74,7 +74,7 @@ public class SalesData
 public class SalesTool : ITool
 {
     public string Name => "SalesTool";
-    public string Description => "Provides sales data for a given product. Input: product name.";        
+    public string Description => "Provides sales data for a given product. Input: product name, year.";        
 
     public Task<object> ExecuteAsync(params string[] input)
     {
@@ -84,7 +84,7 @@ public class SalesTool : ITool
             ?
             int.Parse(input[1].Trim())
             :
-            0;            
+            0;
 
         return Task.FromResult((object) 
         (year == 0 
