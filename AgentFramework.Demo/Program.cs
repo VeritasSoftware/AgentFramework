@@ -28,5 +28,5 @@ while (true)
         break;
 
     var response = await agent.RespondAsync(input);
-    Console.WriteLine($"Agent: {response}\n");
+    Console.WriteLine($"Agent: {response.Response}\n");
 }

@@ -10,6 +10,14 @@ namespace AgentFramework.Core
         Task<object> ExecuteAsync(params string[] input);
     }
 
+    public class ConversationalAgentResponse
+    {
+        public string Response { get; set; } = string.Empty;
+        public string ReasoningResult { get; set; } = string.Empty;
+        public object? ToolOutput { get; set; } = null;
+        public string Error { get; set; } = string.Empty;
+    }
+
     public class ConversationalAgent
     {
         private readonly ChatClient _chatClient;
@@ -32,7 +40,7 @@ namespace AgentFramework.Core
             _history.Add(systemMessage);
         }
 
-        public async Task<string> RespondAsync(string userInput)
+        public async Task<ConversationalAgentResponse> RespondAsync(string userInput)
         {
             _history.Add(new UserChatMessage(userInput));
 
@@ -60,15 +68,20 @@ namespace AgentFramework.Core
 
                         _history.Add(new SystemChatMessage($"Tool '{toolName}' returned: {response}"));
 
-                        return response;
+                        return new ConversationalAgentResponse 
+                        { 
+                            ReasoningResult = reasoningResult, 
+                            Response = response.ReasoningResult, 
+                            ToolOutput = toolOutput 
+                        };
                     }
-                    return $"Error: Tool '{toolName}' not found.";
+                    return new ConversationalAgentResponse { Error = $"Error: Tool '{toolName}' not found." };
                 }
-                return "Error: Invalid tool response format.";
+                return new ConversationalAgentResponse { Error = "Error: Invalid tool response format." };
             }
 
             _history.Add(new AssistantChatMessage(reasoningResult));
-            return reasoningResult;
+            return new ConversationalAgentResponse { ReasoningResult = reasoningResult };
         }
     }
 }
