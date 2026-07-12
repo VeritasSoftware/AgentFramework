@@ -150,7 +150,21 @@ while (true)
         break;
 
     var response = await agent.RespondAsync(input);
-    Console.WriteLine($"Agent: {response}\n");
+    Console.WriteLine($"Agent: {response.Response}\n");
+}
+```
+
+The `ConversationalAgent` returns below `ConversationalAgentResponse`.
+
+The `ToolOutput` property contains the object returned by the Tool.
+
+```csharp
+public class ConversationalAgentResponse
+{
+    public string Response { get; set; } = string.Empty;
+    public string ReasoningResult { get; set; } = string.Empty;
+    public object? ToolOutput { get; set; } = null;
+    public string Error { get; set; } = string.Empty;
 }
 ```
 
