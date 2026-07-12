@@ -113,16 +113,16 @@ Step 2:
 
 Wire up the tools in your application and register them with the agent framework.
 
-Create a `ConversationalAgent instance`, passing in the ChatClient and the list of tools and the reasoning result content. 
+Add the settings with OpenApi details, the list of tools and the reasoning result content. 
 
 The reasoning result content is a string that describes the expected input format for the tools.
 
 The agent will use this information to understand how to interact with the tools during conversations.
 
 ```csharp
-using AgentFramework.Core;
 using AgentFramework.Demo;
-using OpenAI.Chat;
+using Intellectus.AIAgent.Framework;
+using Microsoft.Extensions.DependencyInjection;
 
 var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 if (string.IsNullOrWhiteSpace(apiKey))
@@ -131,16 +131,25 @@ if (string.IsNullOrWhiteSpace(apiKey))
     return;
 }
 
-// Create a ChatClient for the chosen model
-var chatClient = new ChatClient(model: "gpt-4o-mini", apiKey: apiKey);
+// Create a ConversationalAgent with the configured settings
 
-// Create a ConversationalAgent with the ChatClient and the tools and the reasoning result content
-var agent = new ConversationalAgent(chatClient, new List<ITool> { new SalesTool(), new ProductTool() },
-                                    @"<ToolInput>:<Year>
+var services = new ServiceCollection();
+
+services.AddIntellectusAIAgentFramework(settings =>
+{
+    settings.OpenAIAPIKey = apiKey;
+    settings.OpenAILLMModel = "gpt-4o-mini";
+    settings.ReasoningResultContent = @"<ToolInput>:<Year>
                                         Year is optional.
-                                    ");
+                                       ";
+    settings.Tools = new List<ITool> { new SalesTool(), new ProductTool() };
+});
 
-Console.WriteLine("Agent ready. Type 'exit' to quit.\n");
+var sp = services.BuildServiceProvider();
+
+var agent = sp.GetRequiredService<IConversationalAgent>();
+
+Console.WriteLine("🤖 Agent ready. Type 'exit' to quit.\n");
 
 while (true)
 {

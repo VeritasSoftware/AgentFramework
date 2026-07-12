@@ -1,22 +1,31 @@
-﻿using AgentFramework.Core;
-using AgentFramework.Demo;
-using OpenAI.Chat;
+﻿using AgentFramework.Demo;
+using Intellectus.AIAgent.Framework;
+using Microsoft.Extensions.DependencyInjection;
 
-var apiKey = "";//Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 if (string.IsNullOrWhiteSpace(apiKey))
 {
     Console.WriteLine("Please set the OPENAI_API_KEY environment variable.");
     return;
 }
 
-// Create a ChatClient for the chosen model
-var chatClient = new ChatClient(model: "gpt-4o-mini", apiKey: apiKey);
+// Create a ConversationalAgent with the configured settings
 
-// Create a ConversationalAgent with the ChatClient and the tools and the reasoning result content
-var agent = new ConversationalAgent(chatClient, new List<ITool> { new SalesTool(), new ProductTool() },
-                                    @"<ToolInput>:<Year>
+var services = new ServiceCollection();
+
+services.AddIntellectusAIAgentFramework(settings =>
+{
+    settings.OpenAIAPIKey = apiKey;
+    settings.OpenAILLMModel = "gpt-4o-mini";
+    settings.ReasoningResultContent = @"<ToolInput>:<Year>
                                         Year is optional.
-                                    ");
+                                       ";
+    settings.Tools = new List<ITool> { new SalesTool(), new ProductTool() };
+});
+
+var sp = services.BuildServiceProvider();
+
+var agent = sp.GetRequiredService<IConversationalAgent>();
 
 Console.WriteLine("🤖 Agent ready. Type 'exit' to quit.\n");
 

@@ -1,4 +1,4 @@
-﻿using AgentFramework.Core;
+﻿using Intellectus.AIAgent.Framework;
 
 namespace AgentFramework.Demo
 {

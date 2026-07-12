@@ -3,6 +3,6 @@
     <File Path="Demo.jpeg" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="AgentFramework.Core/AgentFramework.Core.csproj" />
   <Project Path="AgentFramework.Demo/AgentFramework.Demo.csproj" />
+  <Project Path="Intellectus.AIAgent.Framework/Intellectus.AIAgent.Framework.csproj" />
 </Solution>
