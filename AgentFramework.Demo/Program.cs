@@ -32,7 +32,7 @@ var sp = services.BuildServiceProvider();
 
 var agent = sp.GetRequiredService<IConversationalAgent>();
 
-Console.WriteLine("🤖 Agent ready. Type 'exit' to quit.\n");
+Console.WriteLine("Agent ready. Type 'exit' to quit.\n");
 
 while (true)
 {
