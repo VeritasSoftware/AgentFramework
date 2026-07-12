@@ -1,4 +1,4 @@
-# .NET AI Agent Framework
+# Intellectus AI Agent Framework for .NET
 
 Library provides an `OpenAI Conversational Agent` for .NET applications. 
 
