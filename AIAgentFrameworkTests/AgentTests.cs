@@ -24,8 +24,7 @@ namespace AIAgentFrameworkTests
                 settings.OpenAIAPIKey = apiKey;
                 settings.OpenAILLMModel = "gpt-4o-mini";
                 settings.ReasoningResultContent = @"<ToolInput>:<Year>
-                                                    Year is optional.
-                                                    ";
+                                                    Year is optional.";
                 //Add tools without using DI
                 //settings.Tools = new List<ITool> { new SalesTool(), new ProductTool() };
             });
@@ -34,11 +33,12 @@ namespace AIAgentFrameworkTests
         }
 
         [Theory]
-        [InlineData("What is the sales in 2026 of xyz?", "TOOL:SalesTool:xyz:2026")]
-        [InlineData("What is the sales of xyz?", "TOOL:SalesTool:xyz")]
-        [InlineData("Give me information about xyz.", "TOOL:ProductTool:xyz")]
-        public async Task AIAgent_Tests(string input, string reasoningResult)
+        [InlineData("What is the sales in 2026 of xyz?", "TOOL:SalesTool:xyz:2026", 1)]
+        [InlineData("What is the sales of xyz?", "TOOL:SalesTool:xyz", 3)]
+        [InlineData("Give me information about xyz.", "TOOL:ProductTool:xyz", 5)]
+        public async Task AIAgent_Tests(string input, string reasoningResult, int sleep)
         {
+            Thread.Sleep(1000 * sleep); // Sleep to avoid rate limiting issues with OpenAI API
             var agent = _serviceProvider.GetRequiredService<IConversationalAgent>();
 
             var response = await agent.RespondAsync(input);
