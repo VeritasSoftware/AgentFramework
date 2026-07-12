@@ -4,5 +4,6 @@
     <File Path="README.md" />
   </Folder>
   <Project Path="AgentFramework.Demo/AgentFramework.Demo.csproj" />
+  <Project Path="AIAgentFrameworkTests/AIAgentFrameworkTests.csproj" Id="2f83efff-561d-4ad4-ab3c-3eed919391fb" />
   <Project Path="Intellectus.AIAgent.Framework/Intellectus.AIAgent.Framework.csproj" />
 </Solution>
