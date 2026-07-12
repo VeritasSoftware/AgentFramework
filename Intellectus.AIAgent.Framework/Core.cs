@@ -1,4 +1,5 @@
-﻿using OpenAI.Chat;
+﻿using Microsoft.Extensions.DependencyInjection;
+using OpenAI.Chat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace Intellectus.AIAgent.Framework
         public string OpenAIAPIKey { get; set; } = string.Empty;
         public string OpenAILLMModel { get; set; } = "gpt-4o-mini";
         public string ReasoningResultContent { get; set; } = string.Empty;
-        public List<ITool> Tools { get; set; } = new List<ITool>();
+        public List<ITool>? Tools { get; set; } = null;
     }
 
     public class ConversationalAgentResponse
@@ -38,12 +39,21 @@ namespace Intellectus.AIAgent.Framework
     public class ConversationalAgent : IConversationalAgent
     {
         private readonly List<ChatMessage> _history = new();
-        private readonly List<ITool> _tools;
+        private readonly List<ITool>? _tools;
         private readonly ConversationalAgentSettings _settings;
 
-        public ConversationalAgent(ConversationalAgentSettings settings)
+        public ConversationalAgent(ConversationalAgentSettings settings, IServiceProvider serviceProvider)
         {
-            _tools = settings.Tools;
+            if (settings.Tools != null && settings.Tools.Any())
+            {
+                _tools = settings.Tools;
+            }
+            else
+            {
+                // If no tools are provided, try to resolve them from the service provider
+                _tools = serviceProvider.GetServices<ITool>().ToList();
+            }
+            
             _settings = settings;
 
             var systemMessage = new SystemChatMessage(string.Format($@"

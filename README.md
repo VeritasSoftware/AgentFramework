@@ -132,9 +132,13 @@ if (string.IsNullOrWhiteSpace(apiKey))
 }
 
 // Create a ConversationalAgent with the configured settings
-
 var services = new ServiceCollection();
 
+// Register tools with DI
+services.AddScoped<ITool, SalesTool>();
+services.AddScoped<ITool, ProductTool>();
+
+// Register the framework and configure settings
 services.AddIntellectusAIAgentFramework(settings =>
 {
     settings.OpenAIAPIKey = apiKey;
@@ -142,7 +146,8 @@ services.AddIntellectusAIAgentFramework(settings =>
     settings.ReasoningResultContent = @"<ToolInput>:<Year>
                                         Year is optional.
                                        ";
-    settings.Tools = new List<ITool> { new SalesTool(), new ProductTool() };
+    //Add tools without using DI
+    //settings.Tools = new List<ITool> { new SalesTool(), new ProductTool() };
 });
 
 var sp = services.BuildServiceProvider();

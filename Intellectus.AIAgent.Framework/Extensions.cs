@@ -12,7 +12,7 @@ namespace Intellectus.AIAgent.Framework
             configureSettings(settings);
             
             services.AddSingleton(settings);
-            services.AddSingleton<IConversationalAgent, ConversationalAgent>();
+            services.AddScoped<IConversationalAgent, ConversationalAgent>();
         }
     }
 }
