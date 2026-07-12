@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Demo.jpeg" />
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="AgentFramework.Core/AgentFramework.Core.csproj" />
+  <Project Path="AgentFramework.Demo/AgentFramework.Demo.csproj" />
+</Solution>

@@ -1,0 +1,158 @@
+# .NET AI Agent Framework
+
+Library provides an `OpenAI Conversational Agent` for .NET applications. 
+
+The agent is designed to facilitate communication between your application and `OpenAI's large language models (LLMs)`, 
+
+enabling you to build intelligent conversational interfaces.
+
+Step 1:
+
+Create your tools by implementing the `ITool` interface. 
+
+This interface defines the structure and behavior of your tools, allowing them to be seamlessly integrated into the agent framework.
+
+The Agent can pass multiple inputs to the `ExecuteAsync` method of the tools, and the tools can return any object as output.
+
+The multiple inputs are based on the `reasoning result content` that you provide when creating the ConversationalAgent instance.
+
+## Interface
+
+```csharp
+public interface ITool
+{
+    string Name { get; }
+    string Description { get; }
+    Task<object> ExecuteAsync(params string[] input);
+}
+```
+
+## Sample Tool Implementation
+
+### Product tool
+
+The `ExecuteAsync` method of the ProductTool class takes a product name as input and returns product information.
+
+```csharp
+public class ProductData
+{
+    public string ProductName { get; set; } = string.Empty;
+    public string Description { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+}
+
+public class ProductTool : ITool
+{
+    public string Name => "ProductTool";
+    public string Description => "Provides product information for a given product. Input: product name.";
+
+    public Task<object> ExecuteAsync(params string[] input)
+    {
+        return Task.FromResult((object)new ProductData
+        {
+            ProductName = input[0],
+            Description = "A high-quality product.",
+            Price = 29.99m
+        });
+    }
+}
+```
+
+### Sales tool
+
+The `ExecuteAsync method of the SalesTool class takes a product name and an optional year as input.
+
+```csharp
+public class SalesData
+{
+    public string ProductName { get; set; } = string.Empty;
+    public decimal TotalSales { get; set; }
+    public int UnitsSold { get; set; }
+    public int? Year { get; set; } = null; // Optional, default to null if not provided
+}
+
+public class SalesTool : ITool
+{
+    public string Name => "SalesTool";
+    public string Description => "Provides sales data for a given product. Input: product name.";        
+
+    public Task<object> ExecuteAsync(params string[] input)
+    {
+        var inputs = input[0].Split(":");
+        var productName = inputs[0].Trim();
+        var year =
+            inputs.Length > 1
+            ?
+            int.Parse(inputs[1].Trim())
+            :
+            0;            
+
+        return Task.FromResult((object) 
+        (year == 0 
+        ?
+        //Total sales and units sold for the product without year
+        new SalesData
+        {
+            ProductName = productName,
+            TotalSales = 10000.50m,
+            UnitsSold = 2000
+        }            
+        :
+        //Total sales and units sold for the product for the specified year
+        new SalesData
+        {
+            ProductName = productName,
+            TotalSales = 500.50m,
+            UnitsSold = 50,
+            Year = year
+        }));
+    }
+}
+```
+
+Step 2:
+
+Wire up the tools in your application and register them with the agent framework.
+
+Create a `ConversationalAgent instance`, passing in the ChatClient and the list of tools and the reasoning result content. 
+
+The reasoning result content is a string that describes the expected input format for the tools.
+
+The agent will use this information to understand how to interact with the tools during conversations.
+
+```csharp
+using AgentFramework.Core;
+using AgentFramework.Demo;
+using OpenAI.Chat;
+
+var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+if (string.IsNullOrWhiteSpace(apiKey))
+{
+    Console.WriteLine("Please set the OPENAI_API_KEY environment variable.");
+    return;
+}
+
+// Create a ChatClient for the chosen model
+var chatClient = new ChatClient(model: "gpt-4o-mini", apiKey: apiKey);
+
+// Create a ConversationalAgent with the ChatClient and the tools and the reasoning result content
+var agent = new ConversationalAgent(chatClient, new List<ITool> { new SalesTool(), new ProductTool() },
+                                    @"<ToolInput>:<Year>
+                                        Year is optional.
+                                    ");
+
+Console.WriteLine("Agent ready. Type 'exit' to quit.\n");
+
+while (true)
+{
+    Console.Write("You: ");
+    var input = Console.ReadLine();
+    if (string.Equals(input, "exit", StringComparison.OrdinalIgnoreCase))
+        break;
+
+    var response = await agent.RespondAsync(input);
+    Console.WriteLine($"Agent: {response}\n");
+}
+```
+
+![Demo](Demo.jpeg)

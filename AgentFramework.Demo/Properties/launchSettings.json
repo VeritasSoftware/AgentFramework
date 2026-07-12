@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "AgentFramework.Demo": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
