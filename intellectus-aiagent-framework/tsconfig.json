@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "rootDir": ".",
+      "target": "es2020",
+      "module": "nodenext",
+      "declaration": true,
+      "outDir": "./dist",
+      "strict": true,
+      "esModuleInterop": true,
+      "moduleResolution": "nodenext",
+      "skipLibCheck": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "allowImportingTsExtensions": true,
+      "rewriteRelativeImportExtensions":true,
+      "noEmit": false
+    },
+    "include": ["src"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  }
