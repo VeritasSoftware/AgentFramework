@@ -9,7 +9,7 @@ if (string.IsNullOrWhiteSpace(apiKey))
     return;
 }
 
-// Create a ConversationalAgent with the configured settings
+// Create an Agent with the configured settings
 var services = new ServiceCollection();
 
 // Register tools with DI
@@ -30,7 +30,7 @@ services.AddIntellectusAIAgentFramework(settings =>
 
 var sp = services.BuildServiceProvider();
 
-var agent = sp.GetRequiredService<IConversationalAgent>();
+var agent = sp.GetRequiredService<IAgent>();
 
 Console.WriteLine("Agent ready. Type 'exit' to quit.\n");
 

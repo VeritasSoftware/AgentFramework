@@ -15,7 +15,7 @@ namespace Intellectus.AIAgent.Framework
         Task<object> ExecuteAsync(params string[] input);
     }
 
-    public class ConversationalAgentSettings
+    public class AgentSettings
     {
         public string OpenAIAPIKey { get; set; } = string.Empty;
         public string OpenAILLMModel { get; set; } = "gpt-4o-mini";
@@ -23,7 +23,7 @@ namespace Intellectus.AIAgent.Framework
         public List<ITool>? Tools { get; set; } = null;
     }
 
-    public class ConversationalAgentResponse
+    public class AgentResponse
     {
         public string Response { get; set; } = string.Empty;
         public string ReasoningResult { get; set; } = string.Empty;
@@ -31,22 +31,22 @@ namespace Intellectus.AIAgent.Framework
         public string Error { get; set; } = string.Empty;
     }
 
-    public interface IConversationalAgent
+    public interface IAgent
     {
-        Task<ConversationalAgentResponse> RespondAsync(string userInput);
+        Task<AgentResponse> RespondAsync(string userInput);
     }
 
-    public class ConversationalAgent : IConversationalAgent
+    public class Agent : IAgent
     {
         private readonly List<ChatMessage> _history = new();
         private List<ITool>? _tools;
-        private readonly ConversationalAgentSettings _settings;
+        private readonly AgentSettings _settings;
         private readonly IServiceProvider _serviceProvider;
 
-        public ConversationalAgent(IServiceProvider serviceProvider)
+        public Agent(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _settings = _serviceProvider.GetRequiredService<ConversationalAgentSettings>();
+            _settings = _serviceProvider.GetRequiredService<AgentSettings>();
 
             RefreshTools();                        
 
@@ -84,7 +84,7 @@ namespace Intellectus.AIAgent.Framework
             }
         }
 
-        public async Task<ConversationalAgentResponse> RespondAsync(string userInput)
+        public async Task<AgentResponse> RespondAsync(string userInput)
         {
             _history.Add(new UserChatMessage(userInput));
             
@@ -116,20 +116,20 @@ namespace Intellectus.AIAgent.Framework
 
                         _history.Add(new SystemChatMessage($"Tool '{toolName}' returned: {response}"));
 
-                        return new ConversationalAgentResponse
+                        return new AgentResponse
                         {
                             ReasoningResult = reasoningResult,
                             Response = response.ReasoningResult,
                             ToolOutput = toolOutput
                         };
                     }
-                    return new ConversationalAgentResponse { Error = $"Error: Tool '{toolName}' not found." };
+                    return new AgentResponse { Error = $"Error: Tool '{toolName}' not found." };
                 }
-                return new ConversationalAgentResponse { Error = "Error: Invalid tool response format." };
+                return new AgentResponse { Error = "Error: Invalid tool response format." };
             }
 
             _history.Add(new AssistantChatMessage(reasoningResult));
-            return new ConversationalAgentResponse { ReasoningResult = reasoningResult };
+            return new AgentResponse { ReasoningResult = reasoningResult };
         }
     }
 }

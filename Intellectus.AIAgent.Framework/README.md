@@ -6,6 +6,8 @@ The agent is designed to facilitate communication between your application and `
 
 enabling you to build intelligent conversational interfaces.
 
+You can tell the Agent about your tools & the Agent can figure out which tool to use, given a natural language input.
+
 Step 1:
 
 Create your tools by implementing the `ITool` interface. 
@@ -115,7 +117,7 @@ Wire up the tools in your application and register them with the agent framework
 
 Add the settings with OpenApi details, the list of tools and the reasoning result content. 
 
-The reasoning result content is a string that describes the expected input format for the tools.
+The reasoning result content is a string that describes the output format of the reasoning which is the expected input for the tools.
 
 The agent will use this information to understand how to interact with the tools during conversations.
 
@@ -181,5 +183,3 @@ public class AgentResponse
     public string Error { get; set; } = string.Empty;
 }
 ```
-
-![Demo](Demo.jpeg)
