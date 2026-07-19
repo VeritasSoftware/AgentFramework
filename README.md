@@ -115,7 +115,7 @@ Wire up the tools in your application and register them with the agent framework
 
 Add the settings with OpenApi details, the list of tools and the reasoning result content. 
 
-The reasoning result content is a string that describes the expected input format for the tools.
+The reasoning result content is a string that describes the output format of the reasoning which is the expected input for the tools.
 
 The agent will use this information to understand how to interact with the tools during conversations.
 
