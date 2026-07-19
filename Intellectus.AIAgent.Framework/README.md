@@ -181,5 +181,3 @@ public class AgentResponse
     public string Error { get; set; } = string.Empty;
 }
 ```
-
-![Demo](Demo.jpeg)

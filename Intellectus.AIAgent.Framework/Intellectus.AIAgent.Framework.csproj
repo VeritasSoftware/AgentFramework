@@ -4,10 +4,33 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	<LangVersion>latest</LangVersion>
 	<Nullable>enable</Nullable>
+	  <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+	  <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+	  <Description>A framework for creating intelligent AI Agents using OpenAI LLMs.</Description>
+	  <PackageProjectUrl>https://github.com/VeritasSoftware/AgentFramework</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/VeritasSoftware/AgentFramework</RepositoryUrl>
+	  <PackageTags>intellectus ai agent framework openai</PackageTags>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <IsPackable>true</IsPackable>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	  <Authors>Shantanu</Authors>
+	  <Company>Veritas Software</Company>
+	  <Version>1.0.0</Version>
+	  <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+	  <Title>Intellectus.AIAgent.Framework</Title>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>	  
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="OpenAI" Version="2.12.0" />
   </ItemGroup>
 
+	<ItemGroup>
+		<Content Include="README.md">
+			<PackagePath>\</PackagePath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Pack>True</Pack>
+		</Content>
+	</ItemGroup>
 </Project>

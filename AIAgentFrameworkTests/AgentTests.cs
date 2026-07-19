@@ -39,7 +39,7 @@ namespace AIAgentFrameworkTests
         public async Task AIAgent_Tests(string input, string reasoningResult, int sleep)
         {
             Thread.Sleep(1000 * sleep); // Sleep to avoid rate limiting issues with OpenAI API
-            var agent = _serviceProvider.GetRequiredService<IConversationalAgent>();
+            var agent = _serviceProvider.GetRequiredService<IAgent>();
 
             var response = await agent.RespondAsync(input);
 
