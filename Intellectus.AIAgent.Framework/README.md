@@ -62,7 +62,7 @@ public class ProductTool : ITool
 
 ### Sales tool
 
-The `ExecuteAsync method of the SalesTool class takes a product name and an optional year as input.
+The `ExecuteAsync` method of the SalesTool class takes a product name and an optional year as input.
 
 ```csharp
 public class SalesData
@@ -115,7 +115,9 @@ Step 2:
 
 Wire up the tools in your application and register them with the agent framework.
 
-Add the settings with OpenAI details (API Key, LLM), the list of tools and the reasoning result content. 
+Add the settings with `OpenAI details (API Key, LLM)`, the `list of tools` and the `reasoning result content`.
+
+The tools can be dependency injected too.
 
 The reasoning result content is a string that describes the output format of the reasoning which is the expected input for the tools.
 
