@@ -6,6 +6,8 @@ The agent is designed to facilitate communication between your application and `
 
 enabling you to build intelligent conversational interfaces.
 
+You can tell the Agent about your tools & the Agent can figure out which tool to use, given a natural language input.
+
 Step 1:
 
 Create your tools by implementing the `ITool` interface. 
