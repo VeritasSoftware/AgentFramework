@@ -8,7 +8,7 @@ enabling you to build intelligent conversational interfaces.
 
 You can tell the Agent about your tools & the Agent can figure out which tool to use, given a natural language input.
 
-Step 1:
+## Step 1:
 
 Create your tools by implementing the `ITool` interface. 
 
@@ -18,7 +18,7 @@ The Agent can pass multiple inputs to the `ExecuteAsync` method of the tools, an
 
 The multiple inputs are based on the `reasoning result content` that you provide when creating the Agent instance.
 
-## Interface
+### Interface
 
 ```csharp
 public interface ITool
@@ -29,9 +29,9 @@ public interface ITool
 }
 ```
 
-## Sample Tool Implementation
+### Sample Tool Implementation
 
-### Product tool
+#### Product tool
 
 The `ExecuteAsync` method of the ProductTool class takes a product name as input and returns product information.
 
@@ -60,7 +60,7 @@ public class ProductTool : ITool
 }
 ```
 
-### Sales tool
+#### Sales tool
 
 The `ExecuteAsync` method of the SalesTool class takes a product name and an optional year as input.
 
@@ -111,7 +111,9 @@ public class SalesTool : ITool
 }
 ```
 
-Step 2:
+## Step 2:
+
+### Using Dependency Injection
 
 Wire up the tools in your application and register them with the agent framework.
 
@@ -171,6 +173,42 @@ while (true)
     Console.WriteLine($"Agent: {response.Response}\n");
 }
 ```
+
+### Without using Dependency Injection
+
+Use the `AgentBuilder` to build the Agent.
+
+```csharp
+using AgentFramework.Demo;
+using Intellectus.AIAgent.Framework;
+
+var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+
+var agent = new AgentBuilder()
+                .AddTool(new ProductTool())
+                .AddTool(new SalesTool())
+                .AddOpenAIAPIKey(apiKey)
+                .AddOpenAILLM("gpt-4o-mini")
+                .AddReasoningResultContent(@"<ToolInput>:<Year>
+                                            Year is optional.
+                                            ")
+                .ToAgent();
+
+Console.WriteLine("Agent ready. Type 'exit' to quit.\n");
+
+while (true)
+{
+    Console.Write("You: ");
+    var input = Console.ReadLine();
+    if (string.Equals(input, "exit", StringComparison.OrdinalIgnoreCase))
+        break;
+
+    var response = await agent.RespondAsync(input);
+    Console.WriteLine($"Agent: {response.Response}\n");
+}
+```
+
+## Agent Response
 
 The `Agent` returns below `AgentResponse`.
 

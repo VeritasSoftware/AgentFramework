@@ -41,14 +41,26 @@ namespace Intellectus.AIAgent.Framework
         private readonly List<ChatMessage> _history = new();
         private List<ITool>? _tools;
         private readonly AgentSettings _settings;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceProvider? _serviceProvider;
+        private ChatClient? _chatClient;
 
+        [ActivatorUtilitiesConstructor]
         public Agent(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
             _settings = _serviceProvider.GetRequiredService<AgentSettings>();
 
-            RefreshTools();                        
+            RefreshTools();
+
+            ResetHistory();
+        }
+
+        public Agent(AgentSettings settings, ChatClient chatClient)
+        {
+            _settings = settings;
+            _chatClient = chatClient;
+
+            RefreshTools();
 
             ResetHistory();
         }
@@ -77,7 +89,7 @@ namespace Intellectus.AIAgent.Framework
             {
                 _tools = _settings.Tools;
             }
-            else
+            else if (_serviceProvider != null)
             {
                 // If no tools are provided, try to resolve them from the service provider
                 _tools = _serviceProvider.GetServices<ITool>().ToList();
@@ -88,9 +100,19 @@ namespace Intellectus.AIAgent.Framework
         {
             _history.Add(new UserChatMessage(userInput));
             
-            var chatClient = _serviceProvider.GetRequiredService<ChatClient>();
+            if (_chatClient == null)
+            {
+                if (_serviceProvider != null)
+                {
+                    _chatClient = _serviceProvider.GetRequiredService<ChatClient>();
+                }
+                else
+                {
+                    throw new InvalidOperationException("ChatClient is null");
+                }
+            }
 
-            var result = await chatClient.CompleteChatAsync(_history);
+            var result = await _chatClient.CompleteChatAsync(_history);
             var reasoningResult = result.Value.Content[0].Text.Trim();
 
             if (reasoningResult.StartsWith("TOOL:"))

@@ -14,7 +14,7 @@ namespace Intellectus.AIAgent.Framework
             
             services.AddSingleton(settings);
             services.AddSingleton(new ChatClient(settings.OpenAILLMModel, settings.OpenAIAPIKey));
-            services.AddScoped<IAgent, Agent>();
+            services.AddScoped<IAgent>(sp => new Agent(sp));
         }
     }
 }
