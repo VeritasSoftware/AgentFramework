@@ -1,5 +1,9 @@
 # Intellectus AI Agent Framework for .NET
 
+|**Packages**|Version|Downloads|
+|---------------------------|:---:|:---:|
+|*Intellectus.AIAgent.Framework*|[![Nuget Version](https://img.shields.io/nuget/v/Intellectus.AIAgent.Framework)](https://www.nuget.org/packages/Intellectus.AIAgent.Framework)|[![Downloads count](https://img.shields.io/nuget/dt/Intellectus.AIAgent.Framework)](https://www.nuget.org/packages/Intellectus.AIAgent.Framework)|
+
 Library provides an `OpenAI Agent` for .NET applications. 
 
 The agent is designed to facilitate communication between your application and `OpenAI's large language models (LLMs)`, 
