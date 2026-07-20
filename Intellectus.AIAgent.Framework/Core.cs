@@ -25,6 +25,7 @@ namespace Intellectus.AIAgent.Framework
 
     public class AgentResponse
     {
+        public string RequestId { get; set; } = string.Empty;
         public string Response { get; set; } = string.Empty;
         public string ReasoningResult { get; set; } = string.Empty;
         public object? ToolOutput { get; set; } = null;
@@ -33,7 +34,8 @@ namespace Intellectus.AIAgent.Framework
 
     public interface IAgent
     {
-        Task<AgentResponse> RespondAsync(string userInput);
+        event Func<AgentResponse, Task>? OnAgentResponse;
+        Task<AgentResponse> RespondAsync(string userInput, string requestId = "");
     }
 
     public class Agent : IAgent
@@ -43,6 +45,8 @@ namespace Intellectus.AIAgent.Framework
         private readonly AgentSettings _settings;
         private readonly IServiceProvider? _serviceProvider;
         private ChatClient? _chatClient;
+
+        public event Func<AgentResponse, Task>? OnAgentResponse;
 
         [ActivatorUtilitiesConstructor]
         public Agent(IServiceProvider serviceProvider)
@@ -96,7 +100,7 @@ namespace Intellectus.AIAgent.Framework
             }
         }
 
-        public async Task<AgentResponse> RespondAsync(string userInput)
+        public async Task<AgentResponse> RespondAsync(string userInput, string requestId = "")
         {
             _history.Add(new UserChatMessage(userInput));
             
@@ -138,12 +142,18 @@ namespace Intellectus.AIAgent.Framework
 
                         _history.Add(new SystemChatMessage($"Tool '{toolName}' returned: {response}"));
 
-                        return new AgentResponse
+                        var agentResponse = new AgentResponse
                         {
+                            RequestId = requestId,
                             ReasoningResult = reasoningResult,
                             Response = response.ReasoningResult,
                             ToolOutput = toolOutput
                         };
+
+                        if (OnAgentResponse != null)
+                            await OnAgentResponse(agentResponse);
+
+                        return agentResponse;
                     }
                     return new AgentResponse { Error = $"Error: Tool '{toolName}' not found." };
                 }

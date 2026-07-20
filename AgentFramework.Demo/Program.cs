@@ -44,3 +44,26 @@ while (true)
     var response = await agent.RespondAsync(input);
     Console.WriteLine($"Agent: {response.Response}\n");
 }
+
+Console.WriteLine(Environment.NewLine);
+Console.WriteLine("Running Agents on threads...");
+
+var inputs = new List<(string input, string reqId)>()
+{ 
+    ("What is the sales in 2026 of xyz?", Guid.NewGuid().ToString()),
+    ("What is the sales of xyz?", Guid.NewGuid().ToString()),
+    ("Give me information about xyz.", Guid.NewGuid().ToString())
+};
+
+agent.OnAgentResponse += async response =>
+{
+    Console.WriteLine($"Agent: RequestId: {response.RequestId}, Response: {response.Response}");
+};
+
+foreach (var input in inputs)
+{
+    Console.WriteLine(input);
+    await Task.Run(async () => await agent.RespondAsync(input.input, input.reqId));
+}
+
+Console.ReadLine();
