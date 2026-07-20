@@ -226,6 +226,7 @@ The `ToolOutput` property contains the object returned by the Tool.
 ```csharp
 public class AgentResponse
 {
+    public string RequestId { get; set; } = string.Empty;
     public string Response { get; set; } = string.Empty;
     public string ReasoningResult { get; set; } = string.Empty;
     public object? ToolOutput { get; set; } = null;
@@ -233,4 +234,36 @@ public class AgentResponse
 }
 ```
 
+## Running Agent on threads
+
+You can run the Agent on threads.
+
+You subscribe to event `OnAgentResponse` to get the Agent's response asynchronously.
+
+Provide a `RequestId` to Agent's `RespondAsync` method to co-relate it to the response.
+
+```csharp
+Console.WriteLine("Running Agents on threads...");
+
+var inputs = new List<(string input, string reqId)>()
+{ 
+    ("What is the sales in 2026 of xyz?", Guid.NewGuid().ToString()),
+    ("What is the sales of xyz?", Guid.NewGuid().ToString()),
+    ("Give me information about xyz.", Guid.NewGuid().ToString())
+};
+
+agent.OnAgentResponse += async response =>
+{
+    Console.WriteLine($"Agent: RequestId: {response.RequestId}, Response: {response.Response}");
+};
+
+foreach (var input in inputs)
+{
+    Console.WriteLine(input);
+    await Task.Run(async () => await agent.RespondAsync(input.input, input.reqId));
+}
+```
+
 ![Demo](Demo.jpeg)
+
+![Demo](DemoThreads.jpeg)
