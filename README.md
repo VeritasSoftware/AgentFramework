@@ -113,8 +113,6 @@ public class SalesTool : ITool
 
 ## Step 2:
 
-### Using Dependency Injection
-
 Wire up the tools in your application and register them with the agent framework.
 
 Add the settings with `OpenAI details (API Key, LLM)`, the `list of tools` and the `reasoning result`.
@@ -124,6 +122,12 @@ The tools can be dependency injected too.
 The reasoning result is a string that describes the output format of the reasoning which is the expected input for the tools.
 
 The agent will use this information to understand how to interact with the tools during conversations.
+
+In the example, ProductName will be passed to Product tool and ProductName and/or Year (optional) to the Sales tool.
+
+### Using Dependency Injection
+
+Use extension `AddIntellectusAIAgentFramework` to wire up the framework for DI.
 
 ```csharp
 using AgentFramework.Demo;
@@ -149,7 +153,7 @@ services.AddIntellectusAIAgentFramework(settings =>
 {
     settings.OpenAIAPIKey = apiKey;
     settings.OpenAILLMModel = "gpt-4o-mini";
-    settings.ReasoningResult = @"<ToolInput>:<Year>
+    settings.ReasoningResult = @"<ProductName>:<Year>
                                     Year is optional.
                                 ";
     //Add tools without using DI
@@ -189,7 +193,7 @@ var agent = new AgentBuilder()
                 .AddTool(new SalesTool())
                 .AddOpenAIAPIKey(apiKey)
                 .AddOpenAILLM("gpt-4o-mini")
-                .AddReasoningResult(@"<ToolInput>:<Year>
+                .AddReasoningResult(@"<ProductName>:<Year>
                                         Year is optional.
                                      ")
                 .ToAgent();

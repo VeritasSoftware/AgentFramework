@@ -16,7 +16,7 @@ namespace AIAgentFrameworkTests
                             .AddTool(new SalesTool())
                             .AddOpenAIAPIKey(apiKey)
                             .AddOpenAILLM("gpt-4o-mini")
-                            .AddReasoningResult(@"<ToolInput>:<Year>
+                            .AddReasoningResult(@"<ProductName>:<Year>
                                                     Year is optional.
                                                  ")
                             .ToAgent();

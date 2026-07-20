@@ -23,7 +23,7 @@ namespace AIAgentFrameworkTests
             {
                 settings.OpenAIAPIKey = apiKey;
                 settings.OpenAILLMModel = "gpt-4o-mini";
-                settings.ReasoningResult = @"<ToolInput>:<Year>
+                settings.ReasoningResult = @"<ProductName>:<Year>
                                                 Year is optional.
                                             ";
                 //Add tools without using DI
