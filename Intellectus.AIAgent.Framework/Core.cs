@@ -108,7 +108,7 @@ namespace Intellectus.AIAgent.Framework
                 }
                 else
                 {
-                    throw new InvalidOperationException("ChatClient is null");
+                    throw new ApplicationException("ChatClient is null");
                 }
             }
 
