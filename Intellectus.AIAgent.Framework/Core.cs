@@ -19,7 +19,7 @@ namespace Intellectus.AIAgent.Framework
     {
         public string OpenAIAPIKey { get; set; } = string.Empty;
         public string OpenAILLMModel { get; set; } = "gpt-4o-mini";
-        public string ReasoningResultContent { get; set; } = string.Empty;
+        public string ReasoningResult { get; set; } = string.Empty;
         public List<ITool>? Tools { get; set; } = null;
     }
 
@@ -74,7 +74,7 @@ namespace Intellectus.AIAgent.Framework
                     If a tool is needed, respond ONLY in the format:
                     TOOL: <ToolName>:{{0}}
                     If no tool is needed, respond with the final answer directly.
-                    ", _settings.ReasoningResultContent));
+                    ", _settings.ReasoningResult));
             _history.Add(systemMessage);
         }
 

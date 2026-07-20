@@ -29,9 +29,9 @@ namespace Intellectus.AIAgent.Framework
             return this;
         }
 
-        public AgentBuilder AddReasoningResultContent(string reasoningResultContent)
+        public AgentBuilder AddReasoningResult(string reasoningResult)
         {
-            _settings.ReasoningResultContent = reasoningResultContent;
+            _settings.ReasoningResult = reasoningResult;
             return this;
         }
 
@@ -45,9 +45,9 @@ namespace Intellectus.AIAgent.Framework
             {
                 throw new ApplicationException($"{nameof(_settings.OpenAILLMModel)} is not provided.");
             }
-            if (string.IsNullOrEmpty(_settings.ReasoningResultContent))
+            if (string.IsNullOrEmpty(_settings.ReasoningResult))
             {
-                throw new ApplicationException($"{nameof(_settings.ReasoningResultContent)} is not provided.");
+                throw new ApplicationException($"{nameof(_settings.ReasoningResult)} is not provided.");
             }
             if (_settings.Tools == null || !_settings.Tools.Any())
             {

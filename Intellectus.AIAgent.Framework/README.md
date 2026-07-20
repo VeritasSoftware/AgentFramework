@@ -16,7 +16,7 @@ This interface defines the structure and behavior of your tools, allowing them t
 
 The Agent can pass multiple inputs to the `ExecuteAsync` method of the tools, and the tools can return any object as output.
 
-The multiple inputs are based on the `reasoning result content` that you provide when creating the Agent instance.
+The multiple inputs are based on the `reasoning result` that you provide when creating the Agent instance.
 
 ### Interface
 
@@ -117,11 +117,11 @@ public class SalesTool : ITool
 
 Wire up the tools in your application and register them with the agent framework.
 
-Add the settings with `OpenAI details (API Key, LLM)`, the `list of tools` and the `reasoning result content`.
+Add the settings with `OpenAI details (API Key, LLM)`, the `list of tools` and the `reasoning result`.
 
 The tools can be dependency injected too.
 
-The reasoning result content is a string that describes the output format of the reasoning which is the expected input for the tools.
+The reasoning result is a string that describes the output format of the reasoning which is the expected input for the tools.
 
 The agent will use this information to understand how to interact with the tools during conversations.
 
@@ -149,9 +149,9 @@ services.AddIntellectusAIAgentFramework(settings =>
 {
     settings.OpenAIAPIKey = apiKey;
     settings.OpenAILLMModel = "gpt-4o-mini";
-    settings.ReasoningResultContent = @"<ToolInput>:<Year>
-                                        Year is optional.
-                                       ";
+    settings.ReasoningResult = @"<ToolInput>:<Year>
+                                    Year is optional.
+                                ";
     //Add tools without using DI
     //settings.Tools = new List<ITool> { new SalesTool(), new ProductTool() };
 });
@@ -189,9 +189,9 @@ var agent = new AgentBuilder()
                 .AddTool(new SalesTool())
                 .AddOpenAIAPIKey(apiKey)
                 .AddOpenAILLM("gpt-4o-mini")
-                .AddReasoningResultContent(@"<ToolInput>:<Year>
-                                            Year is optional.
-                                            ")
+                .AddReasoningResult(@"<ToolInput>:<Year>
+                                        Year is optional.
+                                     ")
                 .ToAgent();
 
 Console.WriteLine("Agent ready. Type 'exit' to quit.\n");
