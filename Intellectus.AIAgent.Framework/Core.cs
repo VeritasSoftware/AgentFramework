@@ -44,6 +44,7 @@ namespace Intellectus.AIAgent.Framework
     public class AgentToolResponseEvent
     {
         public string ToolName { get; set; } = string.Empty;
+        public Func<AgentResponse, bool>? Filter { get; set; }
         public Func<AgentResponse, Task>? OnAgentResponse;
     }
 
@@ -118,7 +119,7 @@ namespace Intellectus.AIAgent.Framework
         public async Task<AgentResponse> RespondAsync(string userInput, string requestId = "")
         {
             _history.Add(new UserChatMessage(userInput));
-            
+
             if (_chatClient == null)
             {
                 if (_serviceProvider != null)
@@ -174,7 +175,17 @@ namespace Intellectus.AIAgent.Framework
                             foreach (var e in OnAgentToolResponse.FindAll(r => r.ToolName == toolName))
                             {
                                 if (e.OnAgentResponse != null)
-                                    await e.OnAgentResponse(agentResponse);
+                                {
+                                    if (e.Filter != null)
+                                    {
+                                        if (e.Filter(agentResponse))
+                                            await e.OnAgentResponse(agentResponse);
+                                    }
+                                    else
+                                    {
+                                        await e.OnAgentResponse(agentResponse);
+                                    }
+                                }
                             }
                         }
 

@@ -242,8 +242,6 @@ public class AgentResponse
 
 ## Running Agent on threads
 
-## Running Agent on threads
-
 You can run the Agent on threads.
 
 You subscribe to events to get the Agent's response asynchronously.
@@ -270,6 +268,8 @@ So, only events for that tool are published to that handler.
 
 If needed, you can add multiple handlers for the same tool to process the response differently.
 
+You can use the `Filter` to specify which response gets published to the handler.
+
 ```csharp
 Console.WriteLine("Running Agent on threads...");
 
@@ -291,14 +291,22 @@ agent.OnAgentResponse += async response =>
 // You can Add multiple for the same tool.
 agent.OnAgentToolResponse.Add(new AgentToolResponseEvent 
 {
-    ToolName = Constants.PRODUCT_TOOL_NAME,
+    ToolName = Constants.PRODUCT_TOOL_NAME,    
     OnAgentResponse = HandleProductToolResponse
 });
 
 agent.OnAgentToolResponse.Add(new AgentToolResponseEvent
 {
     ToolName = Constants.SALES_TOOL_NAME,
-    OnAgentResponse = HandleSalesToolResponse
+    Filter = response => ((SalesData)response.ToolOutput!).Year == null,
+    OnAgentResponse = HandleSalesToolByTotalResponse
+});
+
+agent.OnAgentToolResponse.Add(new AgentToolResponseEvent
+{
+    ToolName = Constants.SALES_TOOL_NAME,
+    Filter = response => ((SalesData)response.ToolOutput!).Year > 0,
+    OnAgentResponse = HandleSalesToolByYearResponse
 });
 
 foreach (var input in inputs)
@@ -318,8 +326,13 @@ async Task HandleProductToolResponse(AgentResponse response)
     Console.WriteLine($"{Constants.PRODUCT_TOOL_NAME} event: RequestId: {response.RequestId}, Response: {response.Response}");
 }
 
-async Task HandleSalesToolResponse(AgentResponse response)
+async Task HandleSalesToolByTotalResponse(AgentResponse response)
 {
-    Console.WriteLine($"{Constants.SALES_TOOL_NAME} event: RequestId: {response.RequestId}, Response: {response.Response}");
+    Console.WriteLine($"{Constants.SALES_TOOL_NAME} by Total event: RequestId: {response.RequestId}, Response: {response.Response}");
+}
+
+async Task HandleSalesToolByYearResponse(AgentResponse response)
+{
+    Console.WriteLine($"{Constants.SALES_TOOL_NAME} by Year event: RequestId: {response.RequestId}, Response: {response.Response}");
 }
 ```

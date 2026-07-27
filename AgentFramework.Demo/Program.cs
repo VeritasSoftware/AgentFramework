@@ -49,22 +49,22 @@ Console.WriteLine(Environment.NewLine);
 Console.WriteLine("Running Agent on threads...");
 
 var inputs = new List<(string input, string reqId)>()
-{ 
+{
     ("What is the sales in 2026 of xyz?", Guid.NewGuid().ToString()),
     ("What is the sales of xyz?", Guid.NewGuid().ToString()),
     ("Give me information about xyz.", Guid.NewGuid().ToString())
 };
 
-// Event handler for all tools.
+// General purpose event handler for all tools.
 // You can add multiple.
 agent.OnAgentResponse += async response =>
 {
     Console.WriteLine($"OnAgentResponse: RequestId: {response.RequestId}, Tool Name: {response.ToolName}, Response: {response.Response}");
 };
 
-// Add event handlers specific for each tool.
+// Tool specific event handler.
 // You can Add multiple for the same tool.
-agent.OnAgentToolResponse.Add(new AgentToolResponseEvent 
+agent.OnAgentToolResponse.Add(new AgentToolResponseEvent
 {
     ToolName = Constants.PRODUCT_TOOL_NAME,
     OnAgentResponse = HandleProductToolResponse
@@ -73,7 +73,15 @@ agent.OnAgentToolResponse.Add(new AgentToolResponseEvent
 agent.OnAgentToolResponse.Add(new AgentToolResponseEvent
 {
     ToolName = Constants.SALES_TOOL_NAME,
-    OnAgentResponse = HandleSalesToolResponse
+    Filter = response => ((SalesData)response.ToolOutput!).Year == null,
+    OnAgentResponse = HandleSalesToolByTotalResponse
+});
+
+agent.OnAgentToolResponse.Add(new AgentToolResponseEvent
+{
+    ToolName = Constants.SALES_TOOL_NAME,
+    Filter = response => ((SalesData)response.ToolOutput!).Year > 0,
+    OnAgentResponse = HandleSalesToolByYearResponse
 });
 
 foreach (var input in inputs)
@@ -93,7 +101,12 @@ async Task HandleProductToolResponse(AgentResponse response)
     Console.WriteLine($"{Constants.PRODUCT_TOOL_NAME} event: RequestId: {response.RequestId}, Response: {response.Response}");
 }
 
-async Task HandleSalesToolResponse(AgentResponse response)
+async Task HandleSalesToolByTotalResponse(AgentResponse response)
 {
-    Console.WriteLine($"{Constants.SALES_TOOL_NAME} event: RequestId: {response.RequestId}, Response: {response.Response}");
+    Console.WriteLine($"{Constants.SALES_TOOL_NAME} by Total event: RequestId: {response.RequestId}, Response: {response.Response}");
+}
+
+async Task HandleSalesToolByYearResponse(AgentResponse response)
+{
+    Console.WriteLine($"{Constants.SALES_TOOL_NAME} by Year event: RequestId: {response.RequestId}, Response: {response.Response}");
 }
