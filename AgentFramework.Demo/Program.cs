@@ -55,24 +55,45 @@ var inputs = new List<(string input, string reqId)>()
     ("Give me information about xyz.", Guid.NewGuid().ToString())
 };
 
+// Event handler for all tools.
+// You can add multiple.
 agent.OnAgentResponse += async response =>
 {
-    Console.WriteLine($"OnAgentResponse 1: RequestId: {response.RequestId}, Response: {response.Response}");
+    Console.WriteLine($"OnAgentResponse: RequestId: {response.RequestId}, Tool Name: {response.ToolName}, Response: {response.Response}");
 };
 
-agent.OnAgentResponse += async response =>
+// Add event handlers specific for each tool.
+// You can Add multiple for the same tool.
+agent.OnAgentToolResponse.Add(new AgentToolResponseEvent 
 {
-    Console.WriteLine($"OnAgentResponse 2: RequestId: {response.RequestId}, Response: {response.Response}");
-};
+    ToolName = Constants.PRODUCT_TOOL_NAME,
+    OnAgentResponse = HandleProductToolResponse
+});
+
+agent.OnAgentToolResponse.Add(new AgentToolResponseEvent
+{
+    ToolName = Constants.SALES_TOOL_NAME,
+    OnAgentResponse = HandleSalesToolResponse
+});
 
 foreach (var input in inputs)
 {
     Console.WriteLine(Environment.NewLine);
     Console.WriteLine(input);
     var response = await agent.RespondThreadAsync(input.input, input.reqId);
-    Console.WriteLine($"Agent: RequestId: {response.RequestId}, Response: {response.Response}");
+    Console.WriteLine($"Agent: RequestId: {response.RequestId}, Tool Name: {response.ToolName}, Response: {response.Response}");
     //OR
     //var response = await Task.Run(async () => await agent.RespondAsync(input.input, input.reqId));
 }
 
 Console.ReadLine();
+
+async Task HandleProductToolResponse(AgentResponse response)
+{
+    Console.WriteLine($"{Constants.PRODUCT_TOOL_NAME} event: RequestId: {response.RequestId}, Response: {response.Response}");
+}
+
+async Task HandleSalesToolResponse(AgentResponse response)
+{
+    Console.WriteLine($"{Constants.SALES_TOOL_NAME} event: RequestId: {response.RequestId}, Response: {response.Response}");
+}

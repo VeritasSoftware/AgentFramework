@@ -28,6 +28,7 @@ namespace Intellectus.AIAgent.Framework
         public string RequestId { get; set; } = string.Empty;
         public string Response { get; set; } = string.Empty;
         public string ReasoningResult { get; set; } = string.Empty;
+        public string ToolName { get; set; } = string.Empty;
         public object? ToolOutput { get; set; } = null;
         public string Error { get; set; } = string.Empty;
     }
@@ -35,8 +36,15 @@ namespace Intellectus.AIAgent.Framework
     public interface IAgent
     {
         event Func<AgentResponse, Task>? OnAgentResponse;
+        List<AgentToolResponseEvent> OnAgentToolResponse { get; set; }
         Task<AgentResponse> RespondAsync(string userInput, string requestId = "");
         Task<AgentResponse> RespondThreadAsync(string userInput, string requestId = "");
+    }
+
+    public class AgentToolResponseEvent
+    {
+        public string ToolName { get; set; } = string.Empty;
+        public Func<AgentResponse, Task>? OnAgentResponse;
     }
 
     public class Agent : IAgent
@@ -48,6 +56,7 @@ namespace Intellectus.AIAgent.Framework
         private ChatClient? _chatClient;
 
         public event Func<AgentResponse, Task>? OnAgentResponse;
+        public List<AgentToolResponseEvent> OnAgentToolResponse { get; set; } = new List<AgentToolResponseEvent>();
 
         [ActivatorUtilitiesConstructor]
         public Agent(IServiceProvider serviceProvider)
@@ -153,11 +162,21 @@ namespace Intellectus.AIAgent.Framework
                             RequestId = requestId,
                             ReasoningResult = reasoningResult,
                             Response = response.ReasoningResult,
+                            ToolName = toolName,
                             ToolOutput = toolOutput
                         };
 
                         if (OnAgentResponse != null)
                             await OnAgentResponse(agentResponse);
+
+                        if (OnAgentToolResponse != null && OnAgentToolResponse.Any())
+                        {
+                            foreach (var e in OnAgentToolResponse.FindAll(r => r.ToolName == toolName))
+                            {
+                                if (e.OnAgentResponse != null)
+                                    await e.OnAgentResponse(agentResponse);
+                            }
+                        }
 
                         return agentResponse;
                     }

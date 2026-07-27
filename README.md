@@ -229,6 +229,7 @@ public class AgentResponse
     public string RequestId { get; set; } = string.Empty;
     public string Response { get; set; } = string.Empty;
     public string ReasoningResult { get; set; } = string.Empty;
+    public string ToolName { get; set; } = string.Empty;
     public object? ToolOutput { get; set; } = null;
     public string Error { get; set; } = string.Empty;
 }
@@ -238,13 +239,27 @@ public class AgentResponse
 
 You can run the Agent on threads.
 
-You subscribe to event `OnAgentResponse` to get the Agent's response asynchronously.
-
-If needed, you can have multiple event handlers to process the response differently.
+You subscribe to events to get the Agent's response asynchronously.
 
 Provide a `RequestId` to Agent's `RespondThreadAsync` method to co-relate it to the response.
 
 This method returns a response too.
+
+### General purpose event handler
+
+You subscribe to event `OnAgentResponse` to get the Agent's response asynchronously.
+
+This event gets all the events for all tools.
+
+If needed, you can have multiple event handlers to process the response differently.
+
+### Tool specific event handler
+
+You can add event handlers specific for a tool.
+
+So, only events for that tool are published to that handler.
+
+If needed, you can add multiple handlers for the same tool to process the response differently.
 
 ```csharp
 Console.WriteLine("Running Agent on threads...");
@@ -256,24 +271,47 @@ var inputs = new List<(string input, string reqId)>()
     ("Give me information about xyz.", Guid.NewGuid().ToString())
 };
 
+// General purpose event handler for all tools.
+// You can add multiple.
 agent.OnAgentResponse += async response =>
 {
-    Console.WriteLine($"OnAgentResponse 1: RequestId: {response.RequestId}, Response: {response.Response}");
+    Console.WriteLine($"OnAgentResponse: RequestId: {response.RequestId}, Tool Name: {response.ToolName}, Response: {response.Response}");
 };
 
-agent.OnAgentResponse += async response =>
+// Tool specific event handler.
+// You can Add multiple for the same tool.
+agent.OnAgentToolResponse.Add(new AgentToolResponseEvent 
 {
-    Console.WriteLine($"OnAgentResponse 2: RequestId: {response.RequestId}, Response: {response.Response}");
-};
+    ToolName = Constants.PRODUCT_TOOL_NAME,
+    OnAgentResponse = HandleProductToolResponse
+});
+
+agent.OnAgentToolResponse.Add(new AgentToolResponseEvent
+{
+    ToolName = Constants.SALES_TOOL_NAME,
+    OnAgentResponse = HandleSalesToolResponse
+});
 
 foreach (var input in inputs)
 {
     Console.WriteLine(Environment.NewLine);
     Console.WriteLine(input);
     var response = await agent.RespondThreadAsync(input.input, input.reqId);
-    Console.WriteLine($"Agent: RequestId: {response.RequestId}, Response: {response.Response}");
+    Console.WriteLine($"Agent: RequestId: {response.RequestId}, Tool Name: {response.ToolName}, Response: {response.Response}");
     //OR
     //var response = await Task.Run(async () => await agent.RespondAsync(input.input, input.reqId));
+}
+
+Console.ReadLine();
+
+async Task HandleProductToolResponse(AgentResponse response)
+{
+    Console.WriteLine($"{Constants.PRODUCT_TOOL_NAME} event: RequestId: {response.RequestId}, Response: {response.Response}");
+}
+
+async Task HandleSalesToolResponse(AgentResponse response)
+{
+    Console.WriteLine($"{Constants.SALES_TOOL_NAME} event: RequestId: {response.RequestId}, Response: {response.Response}");
 }
 ```
 

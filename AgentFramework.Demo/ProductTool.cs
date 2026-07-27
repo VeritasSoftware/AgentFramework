@@ -11,7 +11,7 @@ namespace AgentFramework.Demo
 
     public class ProductTool : ITool
     {
-        public string Name => "ProductTool";
+        public string Name => Constants.PRODUCT_TOOL_NAME;
         public string Description => "Provides product information for a given product. Input: product name.";
 
         public Task<object> ExecuteAsync(params string[] input)
