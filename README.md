@@ -245,6 +245,8 @@ Provide a `RequestId` to Agent's `RespondThreadAsync` method to co-relate it to 
 
 This method returns a response too.
 
+## Event handlers
+
 ### General purpose event handler
 
 You subscribe to event `OnAgentResponse` to get the Agent's response asynchronously.
