@@ -36,6 +36,7 @@ namespace Intellectus.AIAgent.Framework
     {
         event Func<AgentResponse, Task>? OnAgentResponse;
         Task<AgentResponse> RespondAsync(string userInput, string requestId = "");
+        Task<AgentResponse> RespondThreadAsync(string userInput, string requestId = "");
     }
 
     public class Agent : IAgent
@@ -98,6 +99,11 @@ namespace Intellectus.AIAgent.Framework
                 // If no tools are provided, try to resolve them from the service provider
                 _tools = _serviceProvider.GetServices<ITool>().ToList();
             }
+        }
+
+        public async Task<AgentResponse> RespondThreadAsync(string userInput, string requestId = "")
+        {
+            return await Task.Run(async () => await this.RespondAsync(userInput, requestId));
         }
 
         public async Task<AgentResponse> RespondAsync(string userInput, string requestId = "")

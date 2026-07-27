@@ -235,10 +235,14 @@ You can run the Agent on threads.
 
 You subscribe to event `OnAgentResponse` to get the Agent's response asynchronously.
 
-Provide a `RequestId` to Agent's `RespondAsync` method to co-relate it to the response.
+If needed, you can have multiple event handlers to process the response differently.
+
+Provide a `RequestId` to Agent's `RespondThreadAsync` method to co-relate it to the response.
+
+This method returns a response too.
 
 ```csharp
-Console.WriteLine("Running Agents on threads...");
+Console.WriteLine("Running Agent on threads...");
 
 var inputs = new List<(string input, string reqId)>()
 { 
@@ -249,12 +253,21 @@ var inputs = new List<(string input, string reqId)>()
 
 agent.OnAgentResponse += async response =>
 {
-    Console.WriteLine($"Agent: RequestId: {response.RequestId}, Response: {response.Response}");
+    Console.WriteLine($"OnAgentResponse 1: RequestId: {response.RequestId}, Response: {response.Response}");
+};
+
+agent.OnAgentResponse += async response =>
+{
+    Console.WriteLine($"OnAgentResponse 2: RequestId: {response.RequestId}, Response: {response.Response}");
 };
 
 foreach (var input in inputs)
 {
+    Console.WriteLine(Environment.NewLine);
     Console.WriteLine(input);
-    await Task.Run(async () => await agent.RespondAsync(input.input, input.reqId));
+    var response = await agent.RespondThreadAsync(input.input, input.reqId);
+    Console.WriteLine($"Agent: RequestId: {response.RequestId}, Response: {response.Response}");
+    //OR
+    //var response = await Task.Run(async () => await agent.RespondAsync(input.input, input.reqId));
 }
 ```
