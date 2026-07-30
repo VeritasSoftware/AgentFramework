@@ -1,4 +1,4 @@
-﻿namespace AgentFramework.Demo
+﻿namespace MCPServer.Sample
 {
     public class Constants
     {

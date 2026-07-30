@@ -1,9 +1,18 @@
 <Solution>
+  <Folder Name="/samples/">
+    <Project Path="AgentFramework.Demo/AgentFramework.Demo.csproj" />
+    <Project Path="MCPServer.Client.Sample/MCPServer.Client.Sample.csproj" Id="c7c78afb-190a-4e94-81d8-fef730af6b49" />
+    <Project Path="MCPServer.Sample/MCPServer.Sample.csproj" Id="9b43573f-3128-4266-9e9c-f2a370503e9e" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path="Demo.jpeg" />
     <File Path="README.md" />
   </Folder>
-  <Project Path="AgentFramework.Demo/AgentFramework.Demo.csproj" />
-  <Project Path="AIAgentFrameworkTests/AIAgentFrameworkTests.csproj" Id="2f83efff-561d-4ad4-ab3c-3eed919391fb" />
-  <Project Path="Intellectus.AIAgent.Framework/Intellectus.AIAgent.Framework.csproj" />
+  <Folder Name="/src/">
+    <Project Path="Intellectus.AIAgent.Framework/Intellectus.AIAgent.Framework.csproj" />
+    <Project Path="Intellectus.AIAgent.MCPServer/Intellectus.AIAgent.MCPServer.csproj" Id="c56f4b3a-91c4-47e8-bb4a-13959b3aeed9" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="AIAgentFrameworkTests/AIAgentFrameworkTests.csproj" Id="2f83efff-561d-4ad4-ab3c-3eed919391fb" />
+  </Folder>
 </Solution>

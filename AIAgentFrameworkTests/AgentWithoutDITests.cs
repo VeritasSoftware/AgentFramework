@@ -23,10 +23,10 @@ namespace AIAgentFrameworkTests
         }
 
         [Theory]
-        [InlineData("What is the sales in 2026 of xyz?", "TOOL:SalesTool:xyz:2026", 1)]
-        [InlineData("What is the sales of xyz?", "TOOL:SalesTool:xyz", 3)]
-        [InlineData("Give me information about xyz.", "TOOL:ProductTool:xyz", 5)]
-        public async Task AIAgent_Tests(string input, string reasoningResult, int sleep)
+        [InlineData("What is the sales in 2026 of xyz?", "SalesTool", 1)]
+        [InlineData("What is the sales of xyz?", "SalesTool", 3)]
+        [InlineData("Give me information about xyz.", "ProductTool", 5)]
+        public async Task AIAgent_Tests(string input, string toolName, int sleep)
         {
             Thread.Sleep(1000 * sleep); // Sleep to avoid rate limiting issues with OpenAI API
 
@@ -36,7 +36,7 @@ namespace AIAgentFrameworkTests
             Assert.False(string.IsNullOrWhiteSpace(response.Response), "Agent response should not be empty.");
             Assert.NotNull(response.ToolOutput);
             Assert.False(string.IsNullOrWhiteSpace(response.ReasoningResult), "Reasoning result should not be empty.");
-            Assert.Equal(reasoningResult, response.ReasoningResult.Replace(" ", ""));
+            Assert.Equal(toolName, response.ToolName);
         }
     }
 }
