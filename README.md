@@ -4,6 +4,8 @@
 |---------------------------|:---:|:---:|
 |*Intellectus.AIAgent.Framework*|[![Nuget Version](https://img.shields.io/nuget/v/Intellectus.AIAgent.Framework)](https://www.nuget.org/packages/Intellectus.AIAgent.Framework)|[![Downloads count](https://img.shields.io/nuget/dt/Intellectus.AIAgent.Framework)](https://www.nuget.org/packages/Intellectus.AIAgent.Framework)|
 
+## Overview
+
 Library provides an `OpenAI Agent` for .NET applications. 
 
 The agent is designed to facilitate communication between your application and `OpenAI's large language models (LLMs)`, 
@@ -12,7 +14,24 @@ enabling you to build intelligent conversational interfaces.
 
 You can tell the Agent about your tools & the Agent can figure out which tool to use, given a natural language input.
 
-## Step 1:
+You have
+
+* a [`Framework`](#framework) and 
+* a [`MCP Server`](#model-context-protocol-mcp-server).
+
+## Framework
+
+* [`Tools - Step 1`](#tools-step-1)
+* [`Wire up the Tools - Step 2`](#wire-up-the-tools-step-2)
+  * [`Using Dependency Injection`](#using-dependency-injection)
+  * [`Without using Dependency Injection`](#without-using-dependency-injection)
+* [`Agent Response`](#agent-response)
+* [`Running Agent on threads`](#running-agent-on-threads)
+* [`Event handlers`](#event-handlers)
+  * [`General purpose event handler`](#general-purpose-event-handler)
+  * [`Tool specific event handler`](#tool-specific-event-handler)
+
+## Tools - Step 1
 
 Create your tools by implementing the `ITool` interface. 
 
@@ -32,6 +51,8 @@ public interface ITool
     Task<object> ExecuteAsync(params string[] input);
 }
 ```
+
+[`Back to Framework`](#framework)
 
 ### Sample Tool Implementation
 
@@ -73,6 +94,8 @@ public class ProductTool : ITool
     }
 }
 ```
+
+[`Back to Framework`](#framework)
 
 #### Sales tool
 
@@ -125,7 +148,9 @@ public class SalesTool : ITool
 }
 ```
 
-## Step 2:
+[`Back to Framework`](#framework)
+
+## Wire up the Tools - Step 2
 
 Wire up the tools in your application and register them with the agent framework.
 
@@ -138,6 +163,8 @@ The reasoning result is a string that describes the output format of the reasoni
 The agent will use this information to understand how to interact with the tools during conversations.
 
 In the example, ProductName will be passed to Product tool and ProductName and/or Year (optional) to the Sales tool.
+
+[`Back to Framework`](#framework)
 
 ### Using Dependency Injection
 
@@ -192,6 +219,8 @@ while (true)
 }
 ```
 
+[`Back to Framework`](#framework)
+
 ### Without using Dependency Injection
 
 Use the `AgentBuilder` to build the Agent.
@@ -226,6 +255,8 @@ while (true)
 }
 ```
 
+[`Back to Framework`](#framework)
+
 ## Agent Response
 
 The `Agent` returns below `AgentResponse`.
@@ -244,6 +275,8 @@ public class AgentResponse
 }
 ```
 
+[`Back to Framework`](#framework)
+
 ## Running Agent on threads
 
 You can run the Agent on threads.
@@ -254,7 +287,16 @@ Provide a `RequestId` to Agent's `RespondThreadAsync` method to co-relate it to 
 
 This method returns a response too.
 
+[`Back to Framework`](#framework)
+
 ## Event handlers
+
+The framework supports 2 types of event handlers.
+
+* General purpose - gets the response for all Tools.
+* Tool specific - gets the response specific for a Tool.
+
+[`Back to Framework`](#framework)
 
 ### General purpose event handler
 
@@ -263,6 +305,8 @@ You subscribe to event `OnAgentResponse` to get the Agent's response asynchronou
 This event gets all the events for all tools.
 
 If needed, you can have multiple event handlers to process the response differently.
+
+[`Back to Framework`](#framework)
 
 ### Tool specific event handler
 
@@ -273,6 +317,8 @@ So, only events for that tool are published to that handler.
 If needed, you can add multiple handlers for the same tool to process the response differently.
 
 You can use the `Filter` to specify which response gets published to the handler.
+
+[`Back to Framework`](#framework)
 
 ```csharp
 Console.WriteLine("Running Agent on threads...");
@@ -341,6 +387,10 @@ async Task HandleSalesToolByYearResponse(AgentResponse response)
 }
 ```
 
+[`Back to Framework`](#framework)
+
+[`Back to Overview`](#overview)
+
 ![Demo](Demo.jpeg)
 
 ![Demo](DemoThreads.jpeg)
@@ -394,3 +444,5 @@ await builder.Build().RunAsync();
 [Sample Client](/MCPServer.Client.Sample)
 
 [Tests](/AIAgentFrameworkTests/MCPServerTests.cs)
+
+[`Back to Overview`](#overview)
