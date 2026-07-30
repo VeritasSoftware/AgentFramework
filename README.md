@@ -344,3 +344,53 @@ async Task HandleSalesToolByYearResponse(AgentResponse response)
 ![Demo](Demo.jpeg)
 
 ![Demo](DemoThreads.jpeg)
+
+## Model Context Protocol (MCP) Server
+
+You can use the `Intellectus.AIAgent.MCPServer` package to build an MCP Server.
+
+All your Tools reside in your Server. The Server communicates with OpenAI LLMs.
+
+The Clients talk to the Server and get a response back.
+
+![MCP Server architecture](MCPServer.jpeg)
+
+Hook up your server as shown below:
+
+```csharp
+using Intellectus.AIAgent.Framework;
+using Intellectus.AIAgent.MCPServer;
+using MCPServer.Sample;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+Console.WriteLine("Intellectus AI Agent MCP Server...");
+
+var builder = Host.CreateApplicationBuilder(args);
+
+var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+
+// Register tools with DI
+builder.Services.AddScoped<ITool, SalesTool>();
+builder.Services.AddScoped<ITool, ProductTool>();
+
+// Register the server and configure settings
+builder.Services.AddIntellectusAIAgentMCPServer(settings =>
+{
+    settings.OpenAIAPIKey = apiKey;
+    settings.OpenAILLMModel = "gpt-4o-mini";
+    settings.ReasoningResult = @"<ProductName>:<Year>
+                                    Year is optional.
+                                ";
+    //Add tools without using DI
+    //settings.Tools = new List<ITool> { new SalesTool(), new ProductTool() };
+});
+
+await builder.Build().RunAsync();
+```
+
+[Sample MCP Server](/MCPServer.Sample)
+
+[Sample Client](/MCPServer.Client.Sample)
+
+[Tests](/AIAgentFrameworkTests/MCPServerTests.cs)

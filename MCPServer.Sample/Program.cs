@@ -14,7 +14,7 @@ var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 builder.Services.AddScoped<ITool, SalesTool>();
 builder.Services.AddScoped<ITool, ProductTool>();
 
-// Register the framework and configure settings
+// Register the server and configure settings
 builder.Services.AddIntellectusAIAgentMCPServer(settings =>
 {
     settings.OpenAIAPIKey = apiKey;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AgentFramework.Demo
+﻿namespace AgentFramework.Demo
 {
     public class Constants
     {
