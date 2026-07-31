@@ -1,12 +1,10 @@
 ﻿using Intellectus.AIAgent.Framework;
 using Intellectus.AIAgent.MCPServer;
 using MCPServer.Sample;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 Console.WriteLine("Intellectus AI Agent MCP Server...");
 
-var builder = Host.CreateApplicationBuilder(args);
+var builder = WebApplication.CreateBuilder(args);
 
 var apiKey = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
 
@@ -26,4 +24,8 @@ builder.Services.AddIntellectusAIAgentMCPServer(settings =>
     //settings.Tools = new List<ITool> { new SalesTool(), new ProductTool() };
 });
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+
+app.UseIntellectusAIAgentMCPServer();
+
+await app.RunAsync();
