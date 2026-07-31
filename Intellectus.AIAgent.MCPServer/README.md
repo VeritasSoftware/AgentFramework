@@ -37,6 +37,8 @@ change the SDK to Web as shown below:
 and add below properties in the PropertyGroup.
 
 ```
+<RuntimeIdentifiers>win-x64;win-arm64;osx-arm64;linux-x64;linux-arm64;linux-musl-x64</RuntimeIdentifiers>
+
 <!-- Set up the MCP server to be a self-contained application that does not rely on a shared framework -->
 <SelfContained>true</SelfContained>
 <PublishSelfContained>true</PublishSelfContained>
