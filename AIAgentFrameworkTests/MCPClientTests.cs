@@ -28,7 +28,7 @@ namespace AIAgentFrameworkTests
             var id = 1;
             var userInput = "What is the sales in 2026 of xyz?";
 
-            var toolName = "SalesTool";
+            var toolName = "SalesTool"; // expected tool name
             var productName = "xyz"; // expected product name
             var totalSales = 500.50m; // expected total sales
             var unitsSold = 50; // expected units sold
@@ -67,7 +67,7 @@ namespace AIAgentFrameworkTests
             var id = 1;
             var userInput = "What is the sales of xyz?";
 
-            var toolName = "SalesTool";
+            var toolName = "SalesTool"; // expected tool name   
             var productName = "xyz"; // expected product name
             var totalSales = 10000.50m; // expected total sales
             var unitsSold = 2000; // expected units sold
@@ -106,7 +106,7 @@ namespace AIAgentFrameworkTests
             var id = 1;
             var userInput = "Give me information about xyz.";
 
-            var toolName = "ProductTool";
+            var toolName = "ProductTool"; // expected tool name
             var productName = "xyz"; // expected product name            
             var description = "A high-quality product."; // expected description
             var price = 29.99m; // expected price
