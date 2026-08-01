@@ -18,4 +18,10 @@
     <ProjectReference Include="..\Intellectus.AIAgent.MCPServer\Intellectus.AIAgent.MCPServer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Properties\launchSettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

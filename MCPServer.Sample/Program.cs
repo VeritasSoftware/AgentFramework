@@ -13,7 +13,7 @@ builder.Services.AddScoped<ITool, SalesTool>();
 builder.Services.AddScoped<ITool, ProductTool>();
 
 // Register the server and configure settings
-builder.Services.AddIntellectusAIAgentMCPServer(settings =>
+builder.Services.AddIntellectusMCPServer(settings =>
 {
     settings.OpenAIAPIKey = apiKey;
     settings.OpenAILLMModel = "gpt-4o-mini";
@@ -26,6 +26,6 @@ builder.Services.AddIntellectusAIAgentMCPServer(settings =>
 
 var app = builder.Build();
 
-app.UseIntellectusAIAgentMCPServer();
+app.UseIntellectusMCPServer();
 
 await app.RunAsync();

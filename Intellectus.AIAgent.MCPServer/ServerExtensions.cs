@@ -4,7 +4,7 @@ namespace Intellectus.AIAgent.MCPServer
 {
     public static class ServerExtensions
     {
-        public static IServiceCollection AddIntellectusAIAgentMCPServer(this IServiceCollection services, Action<AgentSettings> configureSettings)
+        public static IServiceCollection AddIntellectusMCPServer(this IServiceCollection services, Action<AgentSettings> configureSettings)
         {
             services.AddIntellectusAIAgentFramework(configureSettings);
 
@@ -23,7 +23,7 @@ namespace Intellectus.AIAgent.MCPServer
             return services;
         }
 
-        public static WebApplication UseIntellectusAIAgentMCPServer(this WebApplication app)
+        public static WebApplication UseIntellectusMCPServer(this WebApplication app)
         {
             app.MapMcp("mcp");
             app.UseHttpsRedirection();

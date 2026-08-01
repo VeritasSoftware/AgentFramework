@@ -10,6 +10,7 @@
   </Folder>
   <Folder Name="/src/">
     <Project Path="Intellectus.AIAgent.Framework/Intellectus.AIAgent.Framework.csproj" />
+    <Project Path="Intellectus.AIAgent.MCPServer.Client/Intellectus.AIAgent.MCPServer.Client.csproj" Id="d9853495-2e57-4fbc-a282-3ea99c696215" />
     <Project Path="Intellectus.AIAgent.MCPServer/Intellectus.AIAgent.MCPServer.csproj" Id="f96d1bcd-1f01-47b3-ade7-37a2c3a85693" />
   </Folder>
   <Folder Name="/tests/">

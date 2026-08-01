@@ -1,4 +1,4 @@
-﻿using Intellectus.AIAgent.Framework;
+﻿using AIAgentFrameworkTests.Models;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
 using System.Text.Json;
@@ -26,7 +26,7 @@ namespace AIAgentFrameworkTests
         [InlineData("Give me information about xyz.", "ProductTool", 5)]
         public async Task AIAgent_MCPServer_Tests(string userInput, string toolName, int sleep)
         {
-            Thread.Sleep(sleep);
+            Thread.Sleep(sleep * 1000);
 
             // Arrange
             var param = new CallToolRequestParams
@@ -43,14 +43,15 @@ namespace AIAgentFrameworkTests
 
             var options = new JsonSerializerOptions();
             options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-            var response = JsonSerializer.Deserialize<AgentResponse>(result.Content[0].ToString(), options);
+            var response = JsonSerializer.Deserialize<MCPResponse>(result.Content[0].ToString(), options);
 
             // Assert
             Assert.NotNull(response);
-            Assert.False(string.IsNullOrWhiteSpace(response.Response), "Agent response should not be empty.");
-            Assert.NotNull(response.ToolOutput);
-            Assert.False(string.IsNullOrWhiteSpace(response.ReasoningResult), "Reasoning result should not be empty.");
-            Assert.Equal(toolName, response.ToolName);
+            Assert.NotNull(response.AgentResponse);
+            Assert.False(string.IsNullOrWhiteSpace(response.AgentResponse.Response), "Agent response should not be empty.");
+            Assert.NotNull(response.AgentResponse.ToolOutput);
+            Assert.False(string.IsNullOrWhiteSpace(response.AgentResponse.ReasoningResult), "Reasoning result should not be empty.");
+            Assert.Equal(toolName, response.AgentResponse.ToolName);
         }
 
         public async Task DisposeAsync()
