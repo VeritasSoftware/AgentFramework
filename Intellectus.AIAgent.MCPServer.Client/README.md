@@ -26,8 +26,8 @@ public async Task MCPClient_SalesByYear()
     // Arrange
     var id = 1;
     var userInput = "What is the sales in 2026 of xyz?";
-    var toolName = "SalesTool";
-            
+    
+    var toolName = "SalesTool"; // expected tool name        
     var productName = "xyz"; // expected product name
     var totalSales = 500.50m; // expected total sales
     var unitsSold = 50; // expected units sold
