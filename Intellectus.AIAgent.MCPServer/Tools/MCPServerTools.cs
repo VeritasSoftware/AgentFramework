@@ -8,7 +8,7 @@ namespace Intellectus.AIAgent.MCPServer
     internal class MCPServerTools
     {
         [McpServerTool, Description("AI Agent Respond.")]
-        public static async Task<AgentResponse> AIAgentRespond([Description("The user input")] string userInput,                                                              
+        public static async Task<MCPResponse> AIAgentRespond([Description("The user input")] string userInput,                                                              
                                                                 IAgent agent,
                                                                 ILogger? logger = null)
         {
@@ -16,7 +16,7 @@ namespace Intellectus.AIAgent.MCPServer
 
             var response = await agent.RespondAsync(userInput);
 
-            return response;
+            return new MCPResponse { AgentResponse = response };
         }
     }
 }
