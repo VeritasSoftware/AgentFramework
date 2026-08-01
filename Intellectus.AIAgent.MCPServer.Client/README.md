@@ -47,16 +47,21 @@ public async Task MCPClient_SalesByYear()
     Assert.Equal(toolName, response.AgentResponse.ToolName);
     Assert.NotNull(response.AgentResponse.ToolOutput);
     var toolOutputObj = response.AgentResponse.ToolOutput;
-    var toolOutput = toolOutputObj switch
-    {
-        JsonElement je => je.Deserialize<SalesData>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!,
-        SalesData sd => sd,
-        _ => throw new InvalidCastException($"Unexpected ToolOutput type: {toolOutputObj?.GetType().FullName}")
-    };
+    var toolOutput = DeserializeToolOutput<SalesData>(toolOutputObj);
     Assert.Equal(productName, toolOutput.ProductName);
     Assert.Equal(totalSales, toolOutput.TotalSales);
     Assert.Equal(unitsSold, toolOutput.UnitsSold);
     Assert.Equal(year, toolOutput.Year);
+}
+
+private T DeserializeToolOutput<T>(object toolOutputObj)
+{
+    return toolOutputObj switch
+    {
+        JsonElement je => je.Deserialize<T>(new JsonSerializerOptions { PropertyNameCaseInsensitive = true })!,
+        T sd => sd,
+        _ => throw new InvalidCastException($"Unexpected ToolOutput type: {toolOutputObj?.GetType().FullName}")
+    };
 }
 ```
 

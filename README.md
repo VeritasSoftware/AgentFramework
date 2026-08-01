@@ -18,6 +18,7 @@ You have
 
 * a [`Framework`](#framework).
 * a [`MCP Server`](#model-context-protocol-mcp-server).
+* a [`.NET Client for MCP Server`](#net-client-for-mcp-server).
 
 ## Framework
 
@@ -489,5 +490,15 @@ POST: {BaseUrl}/mcp
 [Sample Client](/MCPServer.Client.Sample)
 
 [Tests](/AIAgentFrameworkTests/MCPServerTests.cs)
+
+[`Back to Overview`](#overview)
+
+## .NET Client for MCP Server
+
+There is a .NET client library `Intellectus.AIAgent.MCPServer.Client` that you can use to call the MCP Server.
+
+Read [**more**](Intellectus.AIAgent.MCPServer.Client/README.md).
+
+[.NET Client Tests](/AIAgentFrameworkTests/MCPClientTests.cs)
 
 [`Back to Overview`](#overview)
