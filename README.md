@@ -19,6 +19,7 @@ You have
 * a [`Framework`](#framework).
 * a [`MCP Server`](#model-context-protocol-mcp-server).
 * a [`.NET Client for MCP Server`](#net-client-for-mcp-server).
+* a [`TypeScript Client for MCP Server`](#typescript-client-for-mcp-server).
 
 ## Framework
 
@@ -500,5 +501,15 @@ There is a .NET client library `Intellectus.AIAgent.MCPServer.Client` that you c
 Read [**more**](Intellectus.AIAgent.MCPServer.Client/README.md).
 
 [.NET Client Tests](/AIAgentFrameworkTests/MCPClientTests.cs)
+
+[`Back to Overview`](#overview)
+
+## TypeScript Client for MCP Server
+
+There is a TypeScript client library `Intellectus.AIAgent.MCPServer.Client` that you can use to call the MCP Server.
+
+Read [**more**](/ts-intellectus-aiagent-mcpserver-client/README.md).
+
+[TypeScript Client Tests](/ts-intellectus-aiagent-mcpserver-client/src/mcp-client.test.ts)
 
 [`Back to Overview`](#overview)
