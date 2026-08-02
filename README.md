@@ -23,6 +23,8 @@ You have
 
 ## Framework
 
+![`Framework architecture`](Framework.jpeg)
+
 * [`Tools - Step 1`](#tools-step-1)
 * [`Wire up the Tools - Step 2`](#wire-up-the-tools-step-2)
   * [`Using Dependency Injection`](#using-dependency-injection)
