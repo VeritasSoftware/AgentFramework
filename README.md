@@ -506,7 +506,7 @@ Read [**more**](Intellectus.AIAgent.MCPServer.Client/README.md).
 
 ## TypeScript Client for MCP Server
 
-There is a TypeScript client library `Intellectus.AIAgent.MCPServer.Client` that you can use to call the MCP Server.
+There is a TypeScript client library `ts-intellectus-aiagent-mcpserver-client` that you can use to call the MCP Server.
 
 Read [**more**](/ts-intellectus-aiagent-mcpserver-client/README.md).
 
