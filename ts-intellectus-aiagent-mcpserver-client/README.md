@@ -11,6 +11,10 @@ It abstracts the complexities of making requests and handling responses, allowin
 Below Unit Test demonstrates a sample request to the MCP Server using the client library.
 
 ```typescript
+import { MCPClient} from 'ts-intellectus-aiagent-mcpserver-client'
+```
+
+```typescript
 describe('MCP Client', () => {
     it('Sales by Year', async () => {
       let id = 1;
