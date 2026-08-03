@@ -3,6 +3,9 @@
 |**Packages**|Version|Downloads|
 |---------------------------|:---:|:---:|
 |*Intellectus.AIAgent.Framework*|[![Nuget Version](https://img.shields.io/nuget/v/Intellectus.AIAgent.Framework)](https://www.nuget.org/packages/Intellectus.AIAgent.Framework)|[![Downloads count](https://img.shields.io/nuget/dt/Intellectus.AIAgent.Framework)](https://www.nuget.org/packages/Intellectus.AIAgent.Framework)|
+|*Intellectus.AIAgent.MCPServer*|[![Nuget Version](https://img.shields.io/nuget/v/Intellectus.AIAgent.MCPServer)](https://www.nuget.org/packages/Intellectus.AIAgent.MCPServer)|[![Downloads count](https://img.shields.io/nuget/dt/Intellectus.AIAgent.MCPServer)](https://www.nuget.org/packages/Intellectus.AIAgent.MCPServer)|
+|*Intellectus.AIAgent.MCPServer.Client*|[![Nuget Version](https://img.shields.io/nuget/v/Intellectus.AIAgent.MCPServer.Client)](https://www.nuget.org/packages/Intellectus.AIAgent.MCPServer.Client)|[![Downloads count](https://img.shields.io/nuget/dt/Intellectus.AIAgent.MCPServer.Client)](https://www.nuget.org/packages/Intellectus.AIAgent.MCPServer.Client)|
+|*ts-intellectus-aiagent-mcpserver-client*|[![NPM Version](https://img.shields.io/npm/v/ts-intellectus-aiagent-mcpserver-client)](https://www.npmjs.com/package/ts-intellectus-aiagent-mcpserver-client)|[![Downloads count](https://img.shields.io/npm/dy/ts-intellectus-aiagent-mcpserver-client)](https://www.npmjs.com/package/ts-intellectus-aiagent-mcpserver-client)|
 
 ## Overview
 

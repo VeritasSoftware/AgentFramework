@@ -4,6 +4,23 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <LangVersion>9.0</LangVersion>
 	  <Nullable>enable</Nullable>
+
+	  <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+	  <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
+	  <Description>Client for Intellectus AI Agent MCP Server.</Description>
+	  <PackageProjectUrl>https://github.com/VeritasSoftware/AgentFramework</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/VeritasSoftware/AgentFramework</RepositoryUrl>
+	  <PackageTags>intellectus ai agent framework openai mcp server client</PackageTags>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <IsPackable>true</IsPackable>
+	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
+	  <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+	  <Authors>Shantanu</Authors>
+	  <Company>Veritas Software</Company>
+	  <Version>1.0.0</Version>
+	  <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+	  <Title>Intellectus.AIAgent.MCPServer.Client</Title>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>

@@ -16,8 +16,8 @@
 	  <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 	  <Authors>Shantanu</Authors>
 	  <Company>Veritas Software</Company>
-	  <Version>2.0.0</Version>
-	  <PackageReleaseNotes>Added tool specific event handlers for improved workflow. Added method to run agent on a thread.</PackageReleaseNotes>
+	  <Version>2.0.1</Version>
+	  <PackageReleaseNotes>Enhancements</PackageReleaseNotes>
 	  <Title>Intellectus.AIAgent.Framework</Title>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>	  
   </PropertyGroup>

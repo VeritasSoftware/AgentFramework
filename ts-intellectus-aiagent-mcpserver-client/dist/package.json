@@ -2,11 +2,8 @@
   "name": "ts-intellectus-aiagent-mcpserver-client",
   "version": "1.0.0",
   "description": "TypeScript Client for Intellectus AI Agent MCP Server",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest",
-    "build": "tsc --build"
-  },
+  "main": "mcp-client.js",
+  "types": "mcp-client.d.ts",
   "keywords": ["Intellectus", "AI", "Agent", "MCP Server", "Client", "TypeScript"],
   "author": "Shantanu",
   "license": "MIT",
