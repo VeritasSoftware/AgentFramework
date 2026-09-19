@@ -20,7 +20,7 @@ services.AddScoped<ITool, ProductTool>();
 services.AddIntellectusAIAgentFramework(settings =>
 {
     settings.OpenAIAPIKey = apiKey;
-    settings.OpenAILLMModel = "gpt-4o-mini";
+    settings.OpenAILLMModel = "gpt-6-astra";
     settings.ReasoningResult = @"<ToolInput>:<Year>
                                     Year is optional.
                                 ";

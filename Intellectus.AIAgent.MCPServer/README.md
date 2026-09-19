@@ -71,7 +71,7 @@ builder.Services.AddScoped<ITool, ProductTool>();
 builder.Services.AddIntellectusMCPServer(settings =>
 {
     settings.OpenAIAPIKey = apiKey;
-    settings.OpenAILLMModel = "gpt-4o-mini";
+    settings.OpenAILLMModel = "gpt-6-astra";
     settings.ReasoningResult = @"<ProductName>:<Year>
                                     Year is optional.
                                 ";

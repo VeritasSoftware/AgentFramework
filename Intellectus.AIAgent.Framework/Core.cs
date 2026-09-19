@@ -18,7 +18,7 @@ namespace Intellectus.AIAgent.Framework
     public class AgentSettings
     {
         public string OpenAIAPIKey { get; set; } = string.Empty;
-        public string OpenAILLMModel { get; set; } = "gpt-4o-mini";
+        public string OpenAILLMModel { get; set; } = "gpt-6-astra";
         public string ReasoningResult { get; set; } = string.Empty;
         public List<ITool>? Tools { get; set; } = null;
     }

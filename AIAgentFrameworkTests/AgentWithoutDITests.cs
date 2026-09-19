@@ -15,7 +15,7 @@ namespace AIAgentFrameworkTests
                             .AddTool(new ProductTool())
                             .AddTool(new SalesTool())
                             .AddOpenAIAPIKey(apiKey)
-                            .AddOpenAILLM("gpt-4o-mini")
+                            .AddOpenAILLM("gpt-6-astra")
                             .AddReasoningResult(@"<ProductName>:<Year>
                                                     Year is optional.
                                                  ")

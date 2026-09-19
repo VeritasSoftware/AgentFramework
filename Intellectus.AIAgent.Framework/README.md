@@ -191,7 +191,7 @@ services.AddScoped<ITool, ProductTool>();
 services.AddIntellectusAIAgentFramework(settings =>
 {
     settings.OpenAIAPIKey = apiKey;
-    settings.OpenAILLMModel = "gpt-4o-mini";
+    settings.OpenAILLMModel = "gpt-6-astra";
     settings.ReasoningResult = @"<ProductName>:<Year>
                                     Year is optional.
                                 ";
@@ -233,7 +233,7 @@ var agent = new AgentBuilder()
                 .AddTool(new ProductTool())
                 .AddTool(new SalesTool())
                 .AddOpenAIAPIKey(apiKey)
-                .AddOpenAILLM("gpt-4o-mini")
+                .AddOpenAILLM("gpt-6-astra")
                 .AddReasoningResult(@"<ProductName>:<Year>
                                         Year is optional.
                                      ")
